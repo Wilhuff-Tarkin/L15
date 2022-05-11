@@ -32,6 +32,7 @@ public class BasePage {
 
     public void scrollTo(WebElement element) {
         //todo general method
+
     }
 
     public void clickOnElement(WebElement element) {

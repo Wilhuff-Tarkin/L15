@@ -36,6 +36,7 @@ public class QuickViewProductPage extends BasePage{
 
     public void waitUntilLoaded() {
         waitUntilVisible(productId);
+        //just checkin
     }
 
     public void switchToIframe() {

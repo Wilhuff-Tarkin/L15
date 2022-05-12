@@ -13,28 +13,28 @@ public class HoverTest extends TestBase {
 
     @Test
     void shouldOpenCategoryPage() {
-
         getToWomenCategoryPage();
         assertThat("Category not opened", driver.getTitle().equals("Blouses - My Store"));
     }
 
     @Test
-    void shouldOpenProductPage() {
-
-        val womenCat = getToWomenCategoryPage();
-        val productPage = getProductViaQuickview(womenCat);
+    void shouldOpenQuickViewProductPage() {
+        val productPage = getProductViaQuickView();
         assertThat("Product page not opened", productPage.getIframe().isDisplayed());
-
     }
 
-    private QuickViewProductPage getProductViaQuickview(CategoryPage womenCat) {
-        womenCat.scrollToProducts();
+    @Test
+    void bigPictureShouldChangeAsPerHover() {
+        val productPage = getProductViaQuickView();
+        productPage.checkAllThumbnails();
+    }
+
+    private QuickViewProductPage getProductViaQuickView() {
+        val womenCat = getToWomenCategoryPage();
         womenCat.hoverOverProduct(0);
         womenCat.goToProductPageViaQuickView(0);
+        womenCat.switchToIframe();
         val productPage = new QuickViewProductPage(driver);
-        //tu brakuje waita
-
-        productPage.switchToIframe();
         return productPage;
     }
 
@@ -48,34 +48,7 @@ public class HoverTest extends TestBase {
         categoryPage.waitUntilVisible(categoryPage.getCategoryHeading());
         return categoryPage;
     }
-//
-//
-////        ztestBasesprawdz czy Title jest iwdoczny
-//
-//
-//        assercja czy zdjecie pani w bluzce jest widoczne;
-//
-//        System.out.println("all good");
-//
-//    }
-//
-//    przejscie do kategori(){
-//        hover to women (wait na reklame)
-//        hover to blouses (wait na tooltip)
-//        click
-//        scroll to picutre
-//    }
-//
-//    @Test
-//    void shouldChangePicturesOnHover() {
-//przejscie do kateogri();
-//hover na zdjecie()
-//        quickviewClieck
-//                newproductPage
-//
-//        System.out.println("all good");
-//
-//    }
+
 
 
 }

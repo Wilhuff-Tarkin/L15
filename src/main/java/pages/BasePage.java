@@ -3,6 +3,7 @@ package pages;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -20,12 +21,13 @@ public class BasePage {
     private JavascriptExecutor js = (JavascriptExecutor) driver;
     private static final Logger log = LoggerFactory.getLogger(BasePage.class);
     private Actions actions;
+    final int WAIT_DURATION = 20;
 
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_DURATION));
         actions = new Actions(driver);
     }
 
@@ -39,6 +41,7 @@ public class BasePage {
         wait.until(ExpectedConditions.elementToBeClickable(element));
         element.click();
     }
+
 
     public void scrollToElement(WebElement element) {
         int limiter = 0;
@@ -67,13 +70,21 @@ public class BasePage {
         try {
             wait.until(ExpectedConditions.visibilityOf(element));
         } catch (TimeoutException timeout) {
-            log.error("Element " + element.toString() + " was not visible after 10 seconds");
+            log.error("Element " + element.getAttribute("title").toString() + " was not visible after " + WAIT_DURATION + " seconds");
             assert false;
         }
     }
 
-    public void switchTo (WebElement element){
-        driver.switchTo().frame(element);
-    }
+    public void switchTo(WebElement elementOld, WebElement elementNew) {
+        try {
+            ExpectedCondition<Boolean> stalenessOfOldElement = ExpectedConditions.stalenessOf(elementOld);
+            ExpectedCondition<WebElement> visibilityOfNewElement = ExpectedConditions.visibilityOf(elementNew);
+            ExpectedCondition<Boolean> readyToSwitch = ExpectedConditions.and(stalenessOfOldElement, visibilityOfNewElement);
 
+            wait.until(readyToSwitch);
+        } catch (TimeoutException timeout) {
+            log.error("Waited " + WAIT_DURATION + " seconds for element: " + elementNew.toString());
+        }
+
+    }
 }

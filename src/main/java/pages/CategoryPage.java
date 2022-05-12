@@ -1,6 +1,7 @@
 package pages;
 
 import lombok.Getter;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -27,6 +28,14 @@ public class CategoryPage extends BasePage {
     @FindBy(css = "a.quick-view")
     private WebElement quickViewButton;
 
+    @Getter
+    @FindBy(css = ".product_list.grid.row")
+    private WebElement productGrid;
+
+//    @Getter
+//    @FindBy(css = ".fancybox-iframe")
+//    private WebElement iframe;
+
 
     public void scrollToProducts() {
         scrollTo(productImageContainers.get(0));
@@ -35,6 +44,11 @@ public class CategoryPage extends BasePage {
     public void hoverOverProduct(int index) {
         hoverOverElement(productImageContainers.get(index));
         waitUntilVisible(quickViewButton);
+    }
+
+    public void switchToIframe() {
+        WebElement elementOld = getProductGrid();
+        switchTo(elementOld, driver.findElement(By.cssSelector("#product")));
     }
 
     public void goToProductPageViaQuickView(int i) {

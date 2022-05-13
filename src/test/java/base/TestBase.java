@@ -21,6 +21,7 @@ public class TestBase {
     private static final Logger log = LoggerFactory.getLogger(TestBase.class);
     public static String automationPracticeURL = "http://automationpractice.com/";
     public static String automationPracticeTitle = "http://automationpractice.com/";
+    public static String BLOUSES = "http://automationpractice.com/index.php?id_category=7&controller=category";
     public static ChromeOptions options = new ChromeOptions();
     public WebDriver driver;
 

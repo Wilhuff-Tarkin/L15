@@ -2,14 +2,21 @@ package pages;
 
 import lombok.Getter;
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 import java.util.List;
 
 public class CategoryPage extends BasePage {
+    private static final Logger log = LoggerFactory.getLogger("category page");
     public CategoryPage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
@@ -32,9 +39,6 @@ public class CategoryPage extends BasePage {
     @FindBy(css = ".product_list.grid.row")
     private WebElement productGrid;
 
-//    @Getter
-//    @FindBy(css = ".fancybox-iframe")
-//    private WebElement iframe;
 
 
     public void scrollToProducts() {
@@ -48,10 +52,22 @@ public class CategoryPage extends BasePage {
 
     public void switchToIframe() {
         WebElement elementOld = getProductGrid();
-        switchTo(elementOld, driver.findElement(By.cssSelector("#product")));
-    }
 
-    public void goToProductPageViaQuickView(int i) {
-        quickViewButton.click();
+        try {
+                ExpectedCondition<Boolean> stalenessOfOldElement = ExpectedConditions.stalenessOf(elementOld);
+                ExpectedCondition<WebElement> visibilityOfNewElement = ExpectedConditions.presenceOfElementLocated(By.cssSelector(".fancybox-iframe"));
+                ExpectedCondition<Boolean> readyToSwitch = ExpectedConditions.and(stalenessOfOldElement, visibilityOfNewElement);
+                wait.until(readyToSwitch);
+
+            } catch (TimeoutException timeout) {
+                log.error("Waited " + WAIT_DURATION + " seconds for iframe");
+            }
+
+        }
+
+
+
+    public void goToProductPageViaQuickView() {
+        clickOnElement(quickViewButton);
     }
 }

@@ -87,4 +87,19 @@ public class BasePage {
         }
 
     }
+
+    public void switchTo(WebElement elementOld) {
+        try {
+            ExpectedCondition<Boolean> stalenessOfOldElement = ExpectedConditions.stalenessOf(elementOld);
+            ExpectedCondition<WebElement> visibilityOfNewElement = ExpectedConditions.presenceOfElementLocated(By.cssSelector(".fancybox-iframe"));
+            ExpectedCondition<Boolean> readyToSwitch = ExpectedConditions.and(stalenessOfOldElement, visibilityOfNewElement);
+            wait.until(readyToSwitch);
+
+        } catch (TimeoutException timeout) {
+            log.error("Waited " + WAIT_DURATION + " seconds for new element");
+        }
+
+    }
+
+
 }

@@ -12,12 +12,12 @@ import pages.QuickViewProductPage;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class HoverTest extends TestBase {
-    private static final Logger log = LoggerFactory.getLogger("hover test");
+    private static final Logger log = LoggerFactory.getLogger("Hover test");
 
     @Test
-    void shouldOpenCategoryPage() {
-        log.info("Opening category page...");
-        getToWomenCategoryPage();
+    void shouldOpenSubCategoryPage() {
+        log.info("Opening sub category page...");
+        getToBlousesSubCategoryPage();
         assertThat("Category not opened", driver.getTitle().equals("Blouses - My Store"));
     }
 
@@ -25,34 +25,29 @@ public class HoverTest extends TestBase {
     void shouldOpenQuickViewProductPage() {
         log.info("Opening product quick view...");
         val productPage = getProductViaQuickView();
-        assertThat("Product page not opened", productPage.getIframe().isDisplayed());
+        assertThat("Product page not opened", !productPage.getShortDescription().getText().isEmpty());
     }
 
     @Test
-    void bigPictureShouldChangeAsPerHover() throws InterruptedException {
+    void bigPictureShouldChangeAsPerHover()  {
         log.info("Checking if big picture changes as per hover...");
         val productPage = getProductViaQuickView();
-     Thread.sleep(1203);
-        productPage.checkAllThumbnails();
+        assertThat("Main picture do not display thumbnail picture after hovering over thumbnails",
+                productPage.checkAllThumbnails());
     }
 
     private QuickViewProductPage getProductViaQuickView() {
-        val womenCat = getToWomenCategoryPage();
-        womenCat.hoverOverProduct(0);
-        womenCat.goToProductPageViaQuickView();
-        womenCat.switchToIframe();
-        val productPage = new QuickViewProductPage(driver);
+        val womenCat = getToBlousesSubCategoryPage();
+        val productPage = womenCat.openQuickView(0);
+        log.info("Opened quick view for: " + productPage.getItemName());
         return productPage;
     }
 
-    private CategoryPage getToWomenCategoryPage() {
+    private CategoryPage getToBlousesSubCategoryPage() {
         val homePage = new HomePage(driver);
-        homePage.waitUntilCategoriesAreVisible();
-        homePage.hoverOverElement(homePage.getWomenCategory());
-        homePage.waitUntilVisible(homePage.getCategoryThumbnail());
-        homePage.getBlousesLink().click();
-        val categoryPage = new CategoryPage(driver);
+        val categoryPage = homePage.goToBlouses();
         categoryPage.waitUntilVisible(categoryPage.getCategoryHeading());
+        log.info("Opened category: " + categoryPage.getCategoryHeading().getText());
         return categoryPage;
     }
 

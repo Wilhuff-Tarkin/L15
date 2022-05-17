@@ -63,7 +63,6 @@ public class BasePage {
     public void hoverOverElement(WebElement element) {
         waitUntilVisible(element);
         actions.moveToElement(element).perform();
-        log.info("Hover over element: " + element.toString());
     }
 
     public void waitUntilVisible(WebElement element) {
@@ -75,31 +74,16 @@ public class BasePage {
         }
     }
 
-    public void switchTo(WebElement elementOld, WebElement elementNew) {
+    public void switchToIframeAlt(String locator) {
+
         try {
-            ExpectedCondition<Boolean> stalenessOfOldElement = ExpectedConditions.stalenessOf(elementOld);
-            ExpectedCondition<WebElement> visibilityOfNewElement = ExpectedConditions.visibilityOf(elementNew);
-            ExpectedCondition<Boolean> readyToSwitch = ExpectedConditions.and(stalenessOfOldElement, visibilityOfNewElement);
 
-            wait.until(readyToSwitch);
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(locator)));
         } catch (TimeoutException timeout) {
-            log.error("Waited " + WAIT_DURATION + " seconds for element: " + elementNew.toString());
+            log.error("Waited " + WAIT_DURATION + " seconds for iframe");
         }
-
+        WebElement Iframe = driver.findElement(By.cssSelector(locator));
+        driver.switchTo().frame(Iframe);
     }
-
-    public void switchTo(WebElement elementOld) {
-        try {
-            ExpectedCondition<Boolean> stalenessOfOldElement = ExpectedConditions.stalenessOf(elementOld);
-            ExpectedCondition<WebElement> visibilityOfNewElement = ExpectedConditions.presenceOfElementLocated(By.cssSelector(".fancybox-iframe"));
-            ExpectedCondition<Boolean> readyToSwitch = ExpectedConditions.and(stalenessOfOldElement, visibilityOfNewElement);
-            wait.until(readyToSwitch);
-
-        } catch (TimeoutException timeout) {
-            log.error("Waited " + WAIT_DURATION + " seconds for new element");
-        }
-
-    }
-
 
 }

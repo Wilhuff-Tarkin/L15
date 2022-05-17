@@ -40,4 +40,13 @@ public class HomePage extends BasePage {
     public void waitUntilCategoriesAreVisible() {
         waitUntilVisible(womenCategory);
     }
+
+    public CategoryPage goToBlouses() {
+        waitUntilCategoriesAreVisible();
+        hoverOverElement(getWomenCategory());
+        waitUntilVisible(getCategoryThumbnail());
+        getBlousesLink().click();
+        CategoryPage categoryPage = new CategoryPage(driver);
+        return categoryPage;
+    }
 }

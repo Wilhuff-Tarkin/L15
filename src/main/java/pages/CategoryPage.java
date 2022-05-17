@@ -1,6 +1,7 @@
 package pages;
 
 import lombok.Getter;
+import lombok.val;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -39,6 +40,9 @@ public class CategoryPage extends BasePage {
     @FindBy(css = ".product_list.grid.row")
     private WebElement productGrid;
 
+    private String iframeCssLocator = ".fancybox-iframe" ;
+
+
 
 
     public void scrollToProducts() {
@@ -50,24 +54,36 @@ public class CategoryPage extends BasePage {
         waitUntilVisible(quickViewButton);
     }
 
-    public void switchToIframe() {
-        WebElement elementOld = getProductGrid();
 
-        try {
-                ExpectedCondition<Boolean> stalenessOfOldElement = ExpectedConditions.stalenessOf(elementOld);
-                ExpectedCondition<WebElement> visibilityOfNewElement = ExpectedConditions.presenceOfElementLocated(By.cssSelector(".fancybox-iframe"));
-                ExpectedCondition<Boolean> readyToSwitch = ExpectedConditions.and(stalenessOfOldElement, visibilityOfNewElement);
-                wait.until(readyToSwitch);
 
-            } catch (TimeoutException timeout) {
-                log.error("Waited " + WAIT_DURATION + " seconds for iframe");
-            }
 
-        }
+
+
 
 
 
     public void goToProductPageViaQuickView() {
         clickOnElement(quickViewButton);
     }
+
+    private CategoryPage getToWomenCategoryPage() {
+        val homePage = new HomePage(driver);
+        homePage.waitUntilCategoriesAreVisible();
+        homePage.hoverOverElement(homePage.getWomenCategory());
+        homePage.waitUntilVisible(homePage.getCategoryThumbnail());
+        homePage.getBlousesLink().click();
+        val categoryPage = new CategoryPage(driver);
+        categoryPage.waitUntilVisible(categoryPage.getCategoryHeading());
+        return categoryPage;
+    }
+
+    public QuickViewProductPage openQuickView(int index) {
+        hoverOverProduct(index);
+        goToProductPageViaQuickView();
+        switchToIframeAlt(iframeCssLocator);
+        return new QuickViewProductPage(driver);
+
+    }
 }
+
+

@@ -63,6 +63,4 @@ public class TestBase {
         driver.quit();
         log.info(">>>>>  Driver closed successfully.");
     }
-
-
 }

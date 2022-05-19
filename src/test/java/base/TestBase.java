@@ -13,34 +13,19 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import configuration.handler.YamlReader;
-import configuration.model.EnvironmentModel;
-import configuration.model.YamlModel;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Locale;
-
 
 public class TestBase {
 
     private static final Logger log = LoggerFactory.getLogger(TestBase.class);
-    public static String BLOUSES = "http://automationpractice.com/index.php?id_category=7&controller=category";
     public static ChromeOptions options = new ChromeOptions();
-    public WebDriver driver;
     protected static EnvironmentModel testEnvironment;
-    private static String loadedEnvironmentName;
     protected static YamlModel model;
+    private static String loadedEnvironmentName;
+    public WebDriver driver;
 
     @BeforeAll
     static void setup() {
-
         initializeTestEnvironment();
         logBasicLoadInformation();
         logDetailedLoadInformation();

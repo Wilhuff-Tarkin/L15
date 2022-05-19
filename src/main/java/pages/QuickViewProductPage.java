@@ -6,17 +6,17 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
-
+import java.util.Locale;
 
 public class QuickViewProductPage extends BasePage {
-
 
     @Getter
     @FindBy(css = "#bigpic")
     private WebElement bigProductPic;
-
     @Getter
     @FindBy(css = "#product_reference")
     private WebElement productId;
@@ -26,31 +26,24 @@ public class QuickViewProductPage extends BasePage {
     @Getter
     @FindBy(css = "#thumbs_list_frame")
     private WebElement thumbs;
-
     @Getter
     @FindBy(css = "#short_description_content")
     private WebElement shortDescription;
-
     @Getter
     @FindBy(css = ".pb-center-column.col-xs-12.col-sm-4 [itemprop = name]")
     private WebElement itemName;
 
-
+    private static final Logger log = LoggerFactory.getLogger("Quick view page");
 
     public QuickViewProductPage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
     }
 
-
-
     public boolean checkAllThumbnails() {
-
         boolean result = false;
-
         List<WebElement> thumbnails = thumbs.findElements(By.cssSelector("[id^=thumbnail] > a"));
-
-        System.out.println(thumbnails.size());
+        log.info("Found " + thumbnails.size() + " thumbnails:");
 
         for (int i = 0; i < thumbnails.size(); i++) {
             String thumbPic = (thumbnails.get(i).getAttribute("href"));
@@ -58,17 +51,16 @@ public class QuickViewProductPage extends BasePage {
             String bigPic = getBigProductPic().getAttribute("src");
             result = removeSuffix(thumbPic).equals(removeSuffix(bigPic));
 
-            System.out.println(removeSuffix(thumbPic) + " " + removeSuffix(bigPic));
+            log.info("Thumbnail: " + removeSuffix(thumbPic)
+                    + " displayed big picture: " + removeSuffix(bigPic));
             if (!result) {
                 return false;
             }
-
         }
         return result;
     }
 
     private String removeSuffix(String pictureUrl) {
-
         int index = pictureUrl.indexOf("-");
         if (index >= 0) {
             pictureUrl = pictureUrl.substring(0, index);
@@ -76,13 +68,7 @@ public class QuickViewProductPage extends BasePage {
         return pictureUrl;
     }
 
-    @Override
-    public String toString() {
-        return "QuickViewProductPage{" +
-                "bigProductPic=" + bigProductPic +
-                ", productId=" + productId +
-                ", iframe=" + iframe +
-                ", thumbs=" + thumbs +
-                '}';
+    public String getItemName() {
+        return ">" + itemName.getText().toUpperCase() + "<";
     }
 }

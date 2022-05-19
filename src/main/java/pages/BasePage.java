@@ -55,4 +55,19 @@ public class BasePage {
         WebElement Iframe = driver.findElement(By.cssSelector(locator));
         driver.switchTo().frame(Iframe);
     }
+
+    public QuickViewProductPage getProductViaQuickView() {
+        val blousesCategory = new CategoryPage(driver);
+        val productPage = blousesCategory.openQuickView(0);
+        log.info("Opened quick view for: " + productPage.getItemName());
+        return productPage;
+    }
+
+    public CategoryPage getToBlousesSubCategoryPage() {
+        val homePage = new HomePage(driver);
+        val categoryPage = homePage.goToBlouses();
+        categoryPage.waitUntilVisible(categoryPage.getCategoryHeading());
+        log.info("Opened category: " + categoryPage.getCategoryHeading().getText());
+        return categoryPage;
+    }
 }

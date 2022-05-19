@@ -12,6 +12,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pages.BasePage;
 
 import java.util.Locale;
 
@@ -23,12 +24,15 @@ public class TestBase {
     protected static YamlModel model;
     private static String loadedEnvironmentName;
     public WebDriver driver;
+    public BasePage base;
+
 
     @BeforeAll
     static void setup() {
         initializeTestEnvironment();
         logBasicLoadInformation();
         logDetailedLoadInformation();
+
     }
 
     private static void initializeTestEnvironment() {
@@ -56,6 +60,8 @@ public class TestBase {
     void setUp() {
         driver = new ChromeDriver(options);
         driver.get(testEnvironment.returnValueAsString("appUrl"));
+        base = new BasePage(driver);
+
     }
 
     @AfterEach
@@ -63,4 +69,5 @@ public class TestBase {
         driver.quit();
         log.info(">>>>>  Driver closed successfully.");
     }
+
 }

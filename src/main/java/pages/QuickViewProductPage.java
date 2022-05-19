@@ -10,10 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.Locale;
 
 public class QuickViewProductPage extends BasePage {
 
+    private static final Logger log = LoggerFactory.getLogger("Quick view page");
     @Getter
     @FindBy(css = "#bigpic")
     private WebElement bigProductPic;
@@ -32,8 +32,6 @@ public class QuickViewProductPage extends BasePage {
     @Getter
     @FindBy(css = ".pb-center-column.col-xs-12.col-sm-4 [itemprop = name]")
     private WebElement itemName;
-
-    private static final Logger log = LoggerFactory.getLogger("Quick view page");
 
     public QuickViewProductPage(WebDriver driver) {
         super(driver);

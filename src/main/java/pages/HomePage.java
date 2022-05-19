@@ -37,7 +37,6 @@ public class HomePage extends BasePage {
         hoverOverElement(getWomenCategory());
         waitUntilVisible(getCategoryThumbnail());
         getBlousesLink().click();
-        CategoryPage categoryPage = new CategoryPage(driver);
-        return categoryPage;
+        return new CategoryPage(driver);
     }
 }

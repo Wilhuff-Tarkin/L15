@@ -1,6 +1,5 @@
 package configuration.model;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import lombok.Getter;
 import org.slf4j.Logger;

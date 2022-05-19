@@ -1,41 +1,19 @@
 
-#testdata options: test1, test2, test3
+#testdata options: test1, test2
 
 testedDataSet: test1
 
 testData:
   test1:
     envName: test1
-    appUrl: http://automationpractice.com/
-    firstName: James
-    lastName: Hetfield
-    email: iron@fist.com
-    age: 47
-    additional: 1234 1234
-    message: Form send with success
-    filepath: src/main/resources/file.txt
+    appUrl: http://automationpractice.com/index.php?id_category=7&controller=category
+    blousesCategoryTitle: Blouses - My Store
+
 
   test2:
     envName: test2
-    appUrl: https://seleniumui.moderntester.pl/form.php
-    firstName: Lars
-    lastName: Ulrich
-    email: lars@drums.com
-    age: 44
-    additional: 1234 1234
-    message: Form send with success
-    filepath: src/main/resources/file.txt
-
-  test3:
-    envName: test3
-    appUrl: https://seleniumui.moderntester.pl/form.php
-    firstName: Kirk
-    lastName: Hammet
-    email: cry@baby.com
-    age: 39
-    additional: 1234 1234
-    message: Form send with success
-    filepath: src/main/resources/file.txt
+    appUrl: http://automationpractice.com/index.php
+    blousesCategoryTitle: Blouses - My Store
 
 
 ---
